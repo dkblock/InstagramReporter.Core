@@ -16,15 +16,19 @@ class InstaParser(InstagramAPI):
                 if not temp.get("big_list"):
                     return followers
                 next_max_id = temp["next_max_id"]
+            else:
+                print("Bad request")
+                return
 
 
 if __name__ == '__main__':
-    usr = "subd_sequrity"
-    pasw = "Subd123"
-    parser = InstaParser(usr, pasw)
+    username = "subd_sequrity"
+    password = "Subd123"
+    parser = InstaParser(username, password)
     parser.login()
-    args = [2268641338]
+    user_ids = [2268641338]
     total_results = []
-    for arg in args:
-        results = parser.get_followers(arg)
-        print(len(results))
+    for user_id in user_ids:
+        followers = parser.get_followers(user_id)
+        if followers:
+            print(len(followers))
