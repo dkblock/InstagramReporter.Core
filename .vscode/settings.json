@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/Users/Iurii/Desktop/Projects/InstagramReporter.Core/venv/bin/python3",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
+}
