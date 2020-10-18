@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import json
+import sys
 import time
 import urllib
 import uuid
@@ -24,7 +25,6 @@ class InstAPI:
         md5 = hashlib.md5()
         md5.update(username.encode('utf-8') + password.encode('utf-8'))
         self.device_id = self.generate_device_id(md5.hexdigest())
-        # self.set_user(username, password)
         self.username = username
         self.password = password
         self.uuid = str(uuid.uuid4())
@@ -128,3 +128,36 @@ class InstAPI:
 
     def get_profile_info(self, user_id):
         return self.send_request('users/' + str(user_id) + '/info/')
+
+    def get_user_followings(self, user_id, maxid=''):
+        url = 'friendships/' + str(user_id) + '/following/?'
+        query_string = {
+            'ig_sig_key_version': self.SIG_KEY_VERSION,
+            'rank_token': self.rank_token,
+        }
+        if maxid:
+            query_string['max_id'] = maxid
+        if sys.version_info.major == 3:
+            url += urllib.parse.urlencode(query_string)
+        else:
+            url += urllib.urlencode(query_string)
+        return self.send_request(url)
+
+    def get_followings(self, user_id):
+        followings = []
+        next_max_id = ''
+        while True:
+            temp = self.get_user_followings(user_id, next_max_id)
+
+            for item in temp["users"]:
+                followings.append(item)
+
+            if not temp["big_list"]:
+                return followings
+            next_max_id = temp["next_max_id"]
+
+    def get_id_by_username(self, username):
+        user_info = self.send_request(
+            'users/' + str(username) + '/usernameinfo/',
+        )
+        return user_info.get('user').get('pk')
