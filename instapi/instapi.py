@@ -62,7 +62,7 @@ class InstAPI:
             ):
                 self.is_authorized = True
                 self.username_id = self.last_json["logged_in_user"]["pk"]
-                self.rank_token = "%s_%s" % (self.username_id, self.uuid)
+                self.rank_token = f'{self.username_id}_{self.uuid}'
                 self.token = self.last_response.cookies["csrftoken"]
 
                 return True
@@ -161,3 +161,42 @@ class InstAPI:
             'users/' + str(username) + '/usernameinfo/',
         )
         return user_info.get('user').get('pk')
+
+    def get_media_likers(self, media_id):
+        return self.send_request(
+            'media/' + str(media_id) + '/likers/',
+        )
+
+    def get_media_comments(self, media_id, max_id=''):
+        return self.send_request(
+            'media/' + media_id + '/comments/?max_id=' + max_id,
+        )
+
+    def get_user_feed(self, user_id, max_id='', min_timestamp=None):
+        return self.send_request(
+            f'feed/user/{user_id}/?max_id={max_id}&min_timestamp={min_timestamp}&rank_token={self.rank_token}&ranked_content=true'  # noqa: E501
+        )
+
+    def get_total_user_feed(self, user_id, min_timestamp=None):
+        user_feed = []
+        next_max_id = ''
+        while True:
+            temp = self.get_user_feed(user_id, next_max_id, min_timestamp)
+            for item in temp["items"]:
+                user_feed.append(item)
+            if not temp["more_available"]:
+                return user_feed
+            next_max_id = temp["next_max_id"]
+
+    def get_last_feed(self, user_id, count, min_timestamp=None):
+        user_feed = []
+        next_max_id = ''
+        while True:
+            temp = self.get_user_feed(user_id, next_max_id, min_timestamp)
+            for item in temp["items"]:
+                user_feed.append(item)
+            if len(user_feed) >= count:
+                return user_feed[:count]
+            if not temp["more_available"]:
+                return user_feed
+            next_max_id = temp["next_max_id"]

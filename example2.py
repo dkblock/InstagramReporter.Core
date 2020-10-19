@@ -6,5 +6,5 @@ if __name__ == '__main__':
     parser = InstAPI(usr, pasw)
     if parser.login():
         print('Login success!\n')
-    answer = parser.get_profile_info(42415631327)
+    answer = parser.get_profile_info(2268641338)
     print(answer)
