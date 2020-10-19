@@ -1,10 +1,13 @@
-import re
+from datetime import datetime
 
-st = 'Leo you are phenomenon 😍😍😍 My congratulations 👏 Wish you more BallondOrs 😜 Te amo ❤\nmessi5'
-st = ''
-if not st:
-    print('yes')
-# l1 = re.split('\n| ', st)
-# l2 = list(filter(lambda word: word[0] == '#', l1))
-# print(l1)
-# print(l2)
+dt = datetime.fromtimestamp(1599680317)
+
+now = datetime.now()
+date_time = dt.strftime("%d-%m-%Y, %H:%M")
+dictionary = {
+    'dt': date_time,
+}
+print(dictionary)
+
+l1 = [1, 2, 3]
+print(max(l1))

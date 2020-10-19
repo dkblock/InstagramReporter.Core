@@ -1,5 +1,6 @@
 from datetime import datetime
-import re
+
+import numpy as np
 
 from instapi.instapi import InstAPI
 
@@ -17,38 +18,31 @@ if __name__ == '__main__':
         posts = insta.get_last_feed(user_id, count)
         if not len(posts):
             user[user_id] = {
-                'last_activity': 'does not exist',
-                'frequency': 0,
+                'max': 'does not exist',
+                'min': 'does not exist',
+                'middle': 'does not exist',
                 'records': [],
             }
             users.append(user)
             continue
-        last_activity_dt = datetime.fromtimestamp(posts[0]['taken_at'])
-        first_activity_dt = datetime.fromtimestamp(posts[-1]['taken_at'])
-        frequency = round(
-            count / (last_activity_dt - first_activity_dt).days,
-            2,
-        )
         records = []
+        likes_counts = []
         for post in posts:
             description = post.get('text', '')
-            if not description:
-                tags = []
-            else:
-                words = re.split('\n| ', description)
-                tags = list(filter(lambda word: word[0] == '#', words))
+            likes_counts.append(post['like_count'])
             record = {
                 'id': post['pk'],
                 'date': datetime.fromtimestamp(
                     post['taken_at'],
                 ).strftime('%d-%m-%Y, %H:%M'),
                 'description': description,
-                'tags': tags,
+                'count': post['like_count'],
             }
             records.append(record)
         user[user_id] = {
-            'last_activity': last_activity_dt.strftime('%d-%m-%Y, %H:%M'),
-            'frequency': frequency,
+            'max': max(likes_counts),
+            'min': min(likes_counts),
+            'middle': round(np.mean(likes_counts), 2),
             'records': records,
         }
         users.append(user)
