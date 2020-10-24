@@ -2,11 +2,6 @@ import sys
 import importlib
 
 
-def run(number):
-    module = importlib.import_module(f'tasks.{number}')
-    module.main()
-
-
 def main():
     number = ''
     try:
