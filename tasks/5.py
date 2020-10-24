@@ -3,14 +3,34 @@ import sys
 
 import numpy as np
 
-from helper_methods import sign_in
+from tasks.helper_methods import pretty, sign_in
 
-if __name__ == '__main__':
+
+def get_records(posts):
+    likes_counts = []
+    records = []
+    for post in posts:
+        description = post.get('text', '')
+        likes_counts.append(post['like_count'])
+        record = {
+            'id': post['pk'],
+            'date': datetime.fromtimestamp(
+                post['taken_at'],
+            ).strftime('%d-%m-%Y, %H:%M'),
+            'description': description,
+            'count': post['like_count'],
+        }
+        records.append(record)
+    return likes_counts, records
+
+
+def main():
     api = sign_in()
     if not api:
         sys.exit('Authentification error!')
     print('Success!\n')
-    count = 5
+    print('Введите количество записей, которые добавить в вывод: ', end='')
+    count = int(input())
     user_ids = [2268641338, 42415631327]
     users = []
     for user_id in user_ids:
@@ -25,20 +45,7 @@ if __name__ == '__main__':
             }
             users.append(user)
             continue
-        records = []
-        likes_counts = []
-        for post in posts:
-            description = post.get('text', '')
-            likes_counts.append(post['like_count'])
-            record = {
-                'id': post['pk'],
-                'date': datetime.fromtimestamp(
-                    post['taken_at'],
-                ).strftime('%d-%m-%Y, %H:%M'),
-                'description': description,
-                'count': post['like_count'],
-            }
-            records.append(record)
+        likes_counts, records = get_records(posts)
         user[user_id] = {
             'max': max(likes_counts),
             'min': min(likes_counts),
@@ -46,4 +53,4 @@ if __name__ == '__main__':
             'records': records,
         }
         users.append(user)
-    print(users)
+    print(pretty(users))

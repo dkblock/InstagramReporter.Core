@@ -2,14 +2,37 @@ from datetime import datetime
 import re
 import sys
 
-from helper_methods import sign_in
+from tasks.helper_methods import pretty, sign_in
 
-if __name__ == '__main__':
+
+def get_records(posts):
+    records = []
+    for post in posts:
+        description = post.get('text', '')
+        if not description:
+            tags = []
+        else:
+            words = re.split('\n| ', description)
+            tags = list(filter(lambda word: word[0] == '#', words))
+        record = {
+            'id': post['pk'],
+            'date': datetime.fromtimestamp(
+                post['taken_at'],
+            ).strftime('%d-%m-%Y, %H:%M'),
+            'description': description,
+            'tags': tags,
+        }
+        records.append(record)
+    return records
+
+
+def main():
     api = sign_in()
     if not api:
         sys.exit('Authentification error!')
     print('Success!\n')
-    count = 5
+    print('Введите количество записей, которые добавить в вывод: ', end='')
+    count = int(input())
     user_ids = [2268641338, 42415631327]
     users = []
     for user_id in user_ids:
@@ -29,27 +52,10 @@ if __name__ == '__main__':
             count / (last_activity_dt - first_activity_dt).days,
             2,
         )
-        records = []
-        for post in posts:
-            description = post.get('text', '')
-            if not description:
-                tags = []
-            else:
-                words = re.split('\n| ', description)
-                tags = list(filter(lambda word: word[0] == '#', words))
-            record = {
-                'id': post['pk'],
-                'date': datetime.fromtimestamp(
-                    post['taken_at'],
-                ).strftime('%d-%m-%Y, %H:%M'),
-                'description': description,
-                'tags': tags,
-            }
-            records.append(record)
         user[user_id] = {
             'last_activity': last_activity_dt.strftime('%d-%m-%Y, %H:%M'),
             'frequency': frequency,
-            'records': records,
+            'records': get_records(posts),
         }
         users.append(user)
-    print(users)
+    print(pretty(users))
