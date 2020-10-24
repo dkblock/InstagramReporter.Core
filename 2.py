@@ -1,4 +1,6 @@
-from instapi.instapi import InstAPI
+import sys
+
+from helper_methods import sign_in
 
 
 def find_tags(biography, tags):
@@ -10,19 +12,18 @@ def find_tags(biography, tags):
 
 
 if __name__ == '__main__':
-    username = 'subd_sequrity'
-    password = 'Subd123'
-    insta = InstAPI(username, password)
-    if insta.login():
-        print('Login success!\n')
+    api = sign_in()
+    if not api:
+        sys.exit('Authentification error!')
+    print('Success!\n')
     user_ids = [42415631327]
     tags = ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
     answer = {}
     for user_id in user_ids:
         blogs = []
-        followings = insta.get_followings(user_id)
+        followings = api.get_followings(user_id)
         for following in followings:
-            profile_info = insta.get_profile_info(following["pk"])['user']
+            profile_info = api.get_profile_info(following["pk"])['user']
             blog = {}
             finded_tags = find_tags(profile_info['biography'].lower(), tags)
             if finded_tags:

@@ -1,21 +1,21 @@
 from datetime import datetime
+import sys
 
 import numpy as np
 
-from instapi.instapi import InstAPI
+from helper_methods import sign_in
 
 if __name__ == '__main__':
-    username = 'subd_sequrity'
-    password = 'Subd123'
-    insta = InstAPI(username, password)
-    if insta.login():
-        print('Login success!\n')
+    api = sign_in()
+    if not api:
+        sys.exit('Authentification error!')
+    print('Success!\n')
     count = 5
     user_ids = [2268641338, 42415631327]
     users = []
     for user_id in user_ids:
         user = {}
-        posts = insta.get_last_feed(user_id, count)
+        posts = api.get_last_feed(user_id, count)
         if not len(posts):
             user[user_id] = {
                 'max': 'does not exist',
