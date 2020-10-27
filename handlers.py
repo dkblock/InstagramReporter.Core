@@ -19,7 +19,7 @@ def error_handler(func):
 
 
 def sign_in(func):
-
+    '''Декоратор для авторизации.'''
     def inner_function(*args, **kwargs):
         # print('Введите логин: ', end='')
         # username = input()

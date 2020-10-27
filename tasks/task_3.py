@@ -1,8 +1,7 @@
 from datetime import datetime
 import re
 
-from handlers import sign_in
-from helper_methods import pretty
+from helper_methods import sign_in
 
 
 def get_records(posts):
@@ -26,8 +25,8 @@ def get_records(posts):
     return records
 
 
-@sign_in
-def main(api):
+def main():
+    api = sign_in()
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
     user_ids = [2268641338, 42415631327]
@@ -53,4 +52,4 @@ def main(api):
             'records': get_records(posts),
         }
         users.append(user)
-    print(pretty(users))
+    return users

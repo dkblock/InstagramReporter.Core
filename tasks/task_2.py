@@ -1,5 +1,4 @@
-from handlers import sign_in
-from helper_methods import pretty
+from helper_methods import sign_in
 
 
 def find_tags(biography, tags):
@@ -27,12 +26,12 @@ def get_blogs(api, followings, tags):
     return blogs
 
 
-@sign_in
-def main(api):
+def main():
+    api = sign_in()
     user_ids = [42415631327]
     tags = ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)
         users[user_id] = get_blogs(api, followings, tags)
-    print(pretty(users))
+    return users
