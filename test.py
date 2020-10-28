@@ -1,10 +1,5 @@
-d = {
-    'user': {
-        'pk': 1,
-        'follower_count': 100001,
-        'full_name': 'AAA',
-        'biography': 'BBB',
-    },
-}
+import re
 
-print(d['user'])
+description = list(filter(None, re.split(' |#', 'Tret #wre#re sdsd\nffsf')))
+a = [re.split(r'\n|\s', i)[0] for i in description]
+print(a)
