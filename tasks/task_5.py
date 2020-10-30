@@ -27,7 +27,7 @@ def main():
     api = sign_in()
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = [2268641338, 42415631327]
+    user_ids = [42415631327]
     users = []
     for user_id in user_ids:
         user = {}

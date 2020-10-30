@@ -2,7 +2,10 @@
 python -m venv venv
 ## Активировать venv
 Windows: venv\Scripts\activate
+MacOS/Linux: source venv/bin/activate
 ## Скачать зависимости
 pip install -r requirements
 # Запустить
-python example.py
+python main.py <номер задачи (1-5)>
+# Запустить тесты
+pytest

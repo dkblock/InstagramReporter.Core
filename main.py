@@ -1,8 +1,7 @@
 import importlib
 import sys
 
-from handlers import error_handler
-from helper_methods import pretty
+from helper_methods import error_handler, pretty
 
 
 @error_handler

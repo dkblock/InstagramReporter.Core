@@ -116,5 +116,4 @@
 #                 },
 #             },
 #         ]
-#         print(main())
 #         self.assertEqual(main(), expected_value)
