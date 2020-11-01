@@ -1,69 +1,110 @@
-# import unittest
-# from unittest.mock import patch
+import unittest
+from unittest.mock import patch
 
-# from instapi.instapi import InstAPI
-# from tasks.task_2 import find_tags, main
+from helper_methods import patch_handler
+from tasks.task_2 import find_tags, get_blogs
+from tests.mock_data import mock_users_test_1
 
 
-# class TestSecondTask(unittest.TestCase):
+class TestFirstTask(unittest.TestCase):
 
-#     @patch('tasks.task_2.get_blogs', return_value=[])
-#     def test_empty_blogs(self, get_blogs):
-#         self.assertEqual(main(), {42415631327: []})
+    @patch_handler
+    def test_find_tags(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        returned_value = find_tags(
+            'This is my blog about sport and travel',
+            ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
+        )
+        expected_value = ['travel', 'sport']
+        self.assertEqual(returned_value, expected_value)
 
-#     @patch.object(InstAPI, "get_followings")
-#     @patch.object(InstAPI, "get_profile_info")
-#     def test_is_blog(self, get_profile, get_followings):
-#         get_followings.return_value = [{'pk': 1}]
-#         mock_user = {
-#             'user': {
-#                 'pk': 1,
-#                 'follower_count': 100001,
-#                 'full_name': 'AAA',
-#                 'biography': 'Sport blogger',
-#             },
-#         }
-#         get_profile.return_value = mock_user
-#         expected_value = {
-#             42415631327: [{
-#                 1: {
-#                     'name': 'AAA',
-#                     'followers': 100001,
-#                     'description': 'Sport blogger',
-#                     'tags': ['sport'],
-#                 },
-#             }],
-#         }
-#         self.assertEqual(main(), expected_value)
+    @patch_handler
+    def test_get_blogs(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        get_profile_info.return_value = mock_users_test_1[1]
+        with patch('tasks.task_2.find_tags', return_value=[]):
+            returned_value = get_blogs(login, [{'pk': 1}], ['travel', 'sport'])
+            expected_value = []
+            self.assertEqual(returned_value, expected_value)
 
-#     @patch.object(InstAPI, "get_followings")
-#     @patch.object(InstAPI, "get_profile_info")
-#     def test_not_is_blog(self, get_profile, get_followings):
-#         get_followings.return_value = [{'pk': 1}]
-#         mock_user = {
-#             'user': {
-#                 'pk': 1,
-#                 'follower_count': 99999,
-#                 'full_name': 'AAA',
-#                 'biography': 'BBB',
-#             },
-#         }
-#         get_profile.return_value = mock_user
-#         expected_value = {42415631327: []}
-#         self.assertEqual(main(), expected_value)
+    # @patch_handler
+    # def test_two_persons(
+    #     self,
+    #     login,
+    #     get_followings,
+    #     get_profile_info,
+    #     get_last_feed,
+    #     input,
+    #     getpass
+    # ):
+    #     login.return_value = True
+    #     getpass.return_value = ''
+    #     get_followings.return_value = [{'pk': 1}, {'pk': 1}]
+    #     get_profile_info.return_value = mock_users_test_1[1]
+    #     expected_value = {
+    #             42415631327: [
+    #                 {
+    #                     2: {
+    #                         'name': 'AAA',
+    #                         'followers': 100001,
+    #                         'description': 'BBB',
+    #                     }
+    #                 },
+    #                 {
+    #                     2: {
+    #                         'name': 'AAA',
+    #                         'followers': 100001,
+    #                         'description': 'BBB',
+    #                     },
+    #                 },
+    #             ],
+    #         }
+    #     self.assertEqual(main(), expected_value)
 
-#     @patch.object(InstAPI, "get_followings")
-#     def test_real_not_celebrities(self, get_followings):
-#         get_followings.return_value = [{'pk': 1396398358}, {'pk': 42415631327}]
-#         expected_value = {
-#             42415631327: []
-#         }
-#         self.assertEqual(main(), expected_value)
+    # @patch_handler
+    # def test_patch_get_celebrities(
+    #     self,
+    #     login,
+    #     get_followings,
+    #     get_profile_info,
+    #     get_last_feed,
+    #     input,
+    #     getpass
+    # ):
+    #     login.return_value = True
+    #     getpass.return_value = ''
+    #     with patch('tasks.task_1.get_celebrities', return_value='something'):
+    #         self.assertEqual(main(), {42415631327: 'something'})
 
-#     def test_find_tags(self):
-#         blogger = 'It is my personal blog about sport and travel.'
-#         tags = ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
-#         not_blogger = 'something'
-#         expected_tags = ['travel', 'sport']
-#         self.assertEqual(find_tags(blogger, tags), expected_tags)
-#         self.assertEqual(find_tags(not_blogger, tags), [])
+    # @patch_handler
+    # def test_profile_info_without_user(
+    #     self,
+    #     login,
+    #     get_followings,
+    #     get_profile_info,
+    #     get_last_feed,
+    #     input,
+    #     getpass
+    # ):
+    #     login.return_value = True
+    #     getpass.return_value = ''
+    #     get_profile_info.return_value = 'something'
+    #     self.assertEqual(main(), {42415631327: []})

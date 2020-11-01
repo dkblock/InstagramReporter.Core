@@ -1,71 +1,114 @@
 import unittest
 from unittest.mock import patch
 
-from instapi.instapi import InstAPI
+from helper_methods import patch_handler
 from tasks.task_1 import main
+from tests.mock_data import mock_users_test_1
 
 
 class TestFirstTask(unittest.TestCase):
 
-    @patch('helper_methods.sign_in')
-    @patch('tasks.task_1.get_celebrities', return_value=[])
-    def test_empty_celebrities(self, get_celebrities, sign_in):
-        sign_in.return_value = None
+    @patch_handler
+    def test_empty_celebrities(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        get_followings.return_value = [{'pk': 1}]
+        get_profile_info.return_value = mock_users_test_1[0]
         self.assertEqual(main(), {42415631327: []})
 
-    # @patch.object(InstAPI, "get_followings")
-    # @patch.object(InstAPI, "get_profile_info")
-    # def test_is_celebrity(self, get_profile, get_followings):
-    #     get_followings.return_value = [{'pk': 1}]
-    #     mock_user = {
-    #         'user': {
-    #             'pk': 1,
-    #             'follower_count': 100001,
-    #             'full_name': 'AAA',
-    #             'biography': 'BBB',
-    #         },
-    #     }
-    #     get_profile.return_value = mock_user
-    #     expected_value = {
-    #         42415631327: [{
-    #             1: {
-    #                 'name': 'AAA',
-    #                 'followers': 100001,
-    #                 'description': 'BBB',
-    #             },
-    #         }],
-    #     }
-    #     self.assertEqual(main(), expected_value)
+    @patch_handler
+    def test_is_celebrity(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        get_followings.return_value = [{'pk': 1}]
+        get_profile_info.return_value = mock_users_test_1[1]
+        expected_value = {
+            42415631327: [{
+                2: {
+                    'name': 'AAA',
+                    'followers': 100001,
+                    'description': 'BBB',
+                },
+            }],
+        }
+        self.assertEqual(main(), expected_value)
 
-    # @patch.object(InstAPI, "get_followings")
-    # @patch.object(InstAPI, "get_profile_info")
-    # def test_not_is_celebrity(self, get_profile, get_followings):
-    #     get_followings.return_value = [{'pk': 1}]
-    #     mock_user = {
-    #         'user': {
-    #             'pk': 1,
-    #             'follower_count': 99999,
-    #             'full_name': 'AAA',
-    #             'biography': 'BBB',
-    #         },
-    #     }
-    #     get_profile.return_value = mock_user
-    #     expected_value = {42415631327: []}
-    #     self.assertEqual(main(), expected_value)
+    @patch_handler
+    def test_two_persons(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        get_followings.return_value = [{'pk': 1}, {'pk': 1}]
+        get_profile_info.return_value = mock_users_test_1[1]
+        expected_value = {
+                42415631327: [
+                    {
+                        2: {
+                            'name': 'AAA',
+                            'followers': 100001,
+                            'description': 'BBB',
+                        }
+                    },
+                    {
+                        2: {
+                            'name': 'AAA',
+                            'followers': 100001,
+                            'description': 'BBB',
+                        },
+                    },
+                ],
+            }
+        self.assertEqual(main(), expected_value)
 
-    # @patch.object(InstAPI, "get_followings")
-    # def test_real_not_celebrities(self, get_followings):
-    #     get_followings.return_value = [{'pk': 1396398358}, {'pk': 42415631327}]
-    #     expected_value = {
-    #         42415631327: []
-    #     }
-    #     self.assertEqual(main(), expected_value)
+    @patch_handler
+    def test_patch_get_celebrities(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        with patch('tasks.task_1.get_celebrities', return_value='something'):
+            self.assertEqual(main(), {42415631327: 'something'})
 
-    # @patch('tasks.task_1.get_celebrities', return_value='mock')
-    # @patch.object(InstAPI, "get_followings")
-    # @patch.object(InstAPI, "get_profile_info")
-    # def test_all_patch(self, get_profile, get_followings, get_celebrities):
-    #     get_followings.return_value = [{'pk': 1}]
-    #     get_profile.return_value = 'something'
-    #     expected_value = {42415631327: 'mock'}
-    #     self.assertEqual(main(), expected_value)
+    @patch_handler
+    def test_profile_info_without_user(
+        self,
+        login,
+        get_followings,
+        get_profile_info,
+        get_last_feed,
+        input,
+        getpass
+    ):
+        login.return_value = True
+        getpass.return_value = ''
+        get_profile_info.return_value = 'something'
+        self.assertEqual(main(), {42415631327: []})

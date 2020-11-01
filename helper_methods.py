@@ -1,6 +1,7 @@
 import json
 import getpass
 import sys
+from unittest.mock import patch
 
 from instapi.instapi import InstAPI
 
@@ -36,4 +37,17 @@ def error_handler(func):
             sys.exit('Номер задания должен быть в диапазоне от 1 до 5')
         except Exception as error:
             sys.exit(f'Произошла непредвиденная ошибка: {error}')
+    return inner_function
+
+
+def patch_handler(func):
+
+    @patch.object(getpass, 'getpass')
+    @patch('builtins.input', return_value='')
+    @patch.object(InstAPI, 'get_last_feed')
+    @patch.object(InstAPI, 'get_profile_info')
+    @patch.object(InstAPI, 'get_followings')
+    @patch.object(InstAPI, 'login')
+    def inner_function(*args, **kwargs):
+        func(*args, **kwargs)
     return inner_function
