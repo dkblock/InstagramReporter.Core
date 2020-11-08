@@ -1,0 +1,66 @@
+{
+    "data": {
+        "user": {
+            "edge_followed_by": {
+                "count": 597,
+                "edges": [
+                    {
+                        "node": {
+                            "followed_by_viewer": false,
+                            "full_name": "",
+                            "id": "895595495",
+                            "is_private": false,
+                            "is_verified": false,
+                            "profile_pic_url": "https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/11850118_951437161586247_1440372738_a.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=S4sce_UexBcAX9oA6ix&oh=ddad7ea835c21fbf1bf15f4ef8da618c&oe=5FD0EA1C",
+                            "reel": {
+                                "expiring_at": 1604915203,
+                                "has_pride_media": false,
+                                "id": "895595495",
+                                "latest_reel_media": 0,
+                                "owner": {
+                                    "__typename": "GraphUser",
+                                    "id": "895595495",
+                                    "profile_pic_url": "https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/11850118_951437161586247_1440372738_a.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=S4sce_UexBcAX9oA6ix&oh=ddad7ea835c21fbf1bf15f4ef8da618c&oe=5FD0EA1C",
+                                    "username": "alexvorronin"
+                                },
+                                "seen": null
+                            },
+                            "requested_by_viewer": false,
+                            "username": "alexvorronin"
+                        }
+                    },
+                    {
+                        "node": {
+                            "followed_by_viewer": false,
+                            "full_name": "\u041e\u043b\u044f \u0412\u043e\u0440\u043e\u043d\u0438\u043d\u0430",
+                            "id": "24828440",
+                            "is_private": false,
+                            "is_verified": false,
+                            "profile_pic_url": "https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s150x150/118452717_419796822327345_1773601295114956253_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=QtgHaXQ8gOEAX8-Rvbc&oh=62c21c1a5dfbcc267dcc393aa81cdf99&oe=5FD25EA7",
+                            "reel": {
+                                "expiring_at": 1604915203,
+                                "has_pride_media": false,
+                                "id": "24828440",
+                                "latest_reel_media": 0,
+                                "owner": {
+                                    "__typename": "GraphUser",
+                                    "id": "24828440",
+                                    "profile_pic_url": "https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s150x150/118452717_419796822327345_1773601295114956253_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=QtgHaXQ8gOEAX8-Rvbc&oh=62c21c1a5dfbcc267dcc393aa81cdf99&oe=5FD25EA7",
+                                    "username": "kondrick"
+                                },
+                                "seen": null
+                            },
+                            "requested_by_viewer": false,
+                            "username": "kondrick"
+                        }
+                    }
+                ],
+                "page_info": {
+                    "end_cursor": null,
+                    "has_next_page": false
+                }
+            }
+        }
+    },
+    "status": "ok"
+}
