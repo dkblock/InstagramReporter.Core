@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from helper_methods import patch_handler
 from tasks.task_1 import main
-from tests.mock_data import mock_users_test_1
+from tests.mock_data import mock_users
 
 
 class TestFirstTask(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestFirstTask(unittest.TestCase):
         login.return_value = True
         getpass.return_value = ''
         get_followings.return_value = [{'pk': 1}]
-        get_profile_info.return_value = mock_users_test_1[0]
+        get_profile_info.return_value = mock_users[0]
         self.assertEqual(main(), {42415631327: []})
 
     @patch_handler
@@ -37,7 +37,7 @@ class TestFirstTask(unittest.TestCase):
         login.return_value = True
         getpass.return_value = ''
         get_followings.return_value = [{'pk': 1}]
-        get_profile_info.return_value = mock_users_test_1[1]
+        get_profile_info.return_value = mock_users[1]
         expected_value = {
             42415631327: [{
                 2: {
@@ -62,7 +62,7 @@ class TestFirstTask(unittest.TestCase):
         login.return_value = True
         getpass.return_value = ''
         get_followings.return_value = [{'pk': 1}, {'pk': 1}]
-        get_profile_info.return_value = mock_users_test_1[1]
+        get_profile_info.return_value = mock_users[1]
         expected_value = {
                 42415631327: [
                     {
