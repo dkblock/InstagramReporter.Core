@@ -10,14 +10,14 @@ def get_records(posts):
         description = post.get('text', '')
         location = post.get('location', {})
         if location:
-            geotags.add(location.get('name',  None))
+            geotags.add(location.get('name', None))
         record = {
             'id': post['pk'],
             'date': datetime.fromtimestamp(
                 post['taken_at'],
             ).strftime('%d-%m-%Y, %H:%M'),
             'description': description,
-            'geotag': location.get('name',  None),
+            'geotag': location.get('name', None),
         }
         records.append(record)
     return list(geotags), records

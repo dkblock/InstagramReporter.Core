@@ -11,7 +11,7 @@ class TestFirstTask(unittest.TestCase):
     def test_find_tags(self):
         returned_value = find_tags(
             'This is my blog about sport and traveling',
-            ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
+            ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес'],
         )
         expected_value = ['travel', 'sport']
         self.assertEqual(returned_value, expected_value)
@@ -19,14 +19,14 @@ class TestFirstTask(unittest.TestCase):
     def test_find_empty_tags(self):
         returned_value = find_tags(
             'This is my blog about sport and traveling',
-            []
+            [],
         )
         self.assertEqual(returned_value, [])
 
     def test_find_wrong_tags(self):
         returned_value = find_tags(
             'This is my blog about sport and traveling',
-            ['programming', 'science', 'cooking']
+            ['programming', 'science', 'cooking'],
         )
         self.assertEqual(returned_value, [])
 
@@ -38,7 +38,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -55,7 +55,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''

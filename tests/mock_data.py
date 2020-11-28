@@ -50,7 +50,7 @@ mock_record_with_text = [
     {
         'pk': 1,
         'taken_at': 1528797322,
-        'text': '123'
+        'text': '123',
     },
 ]
 
@@ -61,7 +61,7 @@ mock_record_with_tags = [
         'text': 'I like #sport and #travel',
         'location': {
             'name': 'Yaroslavl',
-        }
+        },
     },
 ]
 
@@ -72,7 +72,7 @@ mock_records_with_same_geotags = [
         'text': '1',
         'location': {
             'name': 'Yaroslavl',
-        }
+        },
     },
     {
         'pk': 2,
@@ -80,7 +80,7 @@ mock_records_with_same_geotags = [
         'text': '2',
         'location': {
             'name': 'Yaroslavl',
-        }
+        },
     },
 ]
 
@@ -91,7 +91,7 @@ mock_records_with_different_geotags = [
         'text': '1',
         'location': {
             'name': 'Yaroslavl',
-        }
+        },
     },
     {
         'pk': 2,
@@ -99,7 +99,7 @@ mock_records_with_different_geotags = [
         'text': '2',
         'location': {
             'name': 'Moscow',
-        }
+        },
     },
 ]
 

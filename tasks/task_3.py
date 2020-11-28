@@ -4,15 +4,18 @@ import re
 from helper_methods import sign_in
 
 
+def get_hashtags(description):
+    words = re.split('\n| ', description)
+    return list(filter(lambda word: word[0] == '#', words))
+
+
 def get_records(posts):
     records = []
     for post in posts:
         description = post.get('text', '')
-        if not description:
-            tags = []
-        else:
-            words = re.split('\n| ', description)
-            tags = list(filter(lambda word: word[0] == '#', words))
+        tags = []
+        if description:
+            tags.append(get_hashtags(description))
         record = {
             'id': post['pk'],
             'date': datetime.fromtimestamp(
@@ -52,5 +55,4 @@ def main():
             'records': get_records(posts),
         }
         users.append(user)
-    print(users)
     return users

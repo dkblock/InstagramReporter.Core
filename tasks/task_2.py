@@ -12,7 +12,7 @@ def find_tags(biography, tags):
 def get_blogs(api, followings, tags):
     blogs = []
     for following in followings:
-        profile_info = api.get_profile_info(following["pk"])['user']
+        profile_info = api.get_profile_info(following['pk'])['user']
         blog = {}
         finded_tags = find_tags(profile_info['biography'].lower(), tags)
         if finded_tags:

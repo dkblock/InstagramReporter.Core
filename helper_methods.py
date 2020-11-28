@@ -27,7 +27,11 @@ def sign_in():
 
 
 def error_handler(func):
-    '''Декоратор для обработки исключений.'''
+    """Catch exceptions.
+
+    :param func: function which use decorator
+    :return: inner_function
+    """
     def inner_function(*args, **kwargs):
         try:
             func(*args, **kwargs)

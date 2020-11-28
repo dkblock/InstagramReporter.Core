@@ -22,7 +22,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -48,7 +48,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -82,7 +82,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -122,7 +122,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -156,7 +156,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''

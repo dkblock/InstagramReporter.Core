@@ -16,7 +16,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -32,7 +32,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -57,30 +57,30 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
         get_followings.return_value = [{'pk': 1}, {'pk': 1}]
         get_profile_info.return_value = mock_users[1]
         expected_value = {
-                42415631327: [
-                    {
-                        2: {
-                            'name': 'AAA',
-                            'followers': 100001,
-                            'description': 'BBB',
-                        }
+            42415631327: [
+                {
+                    2: {
+                        'name': 'AAA',
+                        'followers': 100001,
+                        'description': 'BBB',
                     },
-                    {
-                        2: {
-                            'name': 'AAA',
-                            'followers': 100001,
-                            'description': 'BBB',
-                        },
+                },
+                {
+                    2: {
+                        'name': 'AAA',
+                        'followers': 100001,
+                        'description': 'BBB',
                     },
-                ],
-            }
+                },
+            ],
+        }
         self.assertEqual(main(), expected_value)
 
     @patch_handler
@@ -91,7 +91,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -106,7 +106,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''

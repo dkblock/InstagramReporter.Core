@@ -10,5 +10,5 @@ def main():
     print(pretty(importlib.import_module(f'tasks.task_{number}').main()))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

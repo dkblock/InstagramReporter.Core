@@ -22,7 +22,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -47,7 +47,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -80,7 +80,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -113,7 +113,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -152,7 +152,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info,
         get_last_feed,
         input,
-        getpass
+        getpass,
     ):
         login.return_value = True
         getpass.return_value = ''
@@ -173,13 +173,13 @@ class TestFourthTask(unittest.TestCase):
                                 'date': '12-06-2018, 12:55',
                                 'description': '1',
                                 'geotag': 'Yaroslavl',
-                                'id': 1
+                                'id': 1,
                             },
                             {
                                 'date': '12-06-2018, 12:55',
                                 'description': '2',
                                 'geotag': 'Moscow',
-                                'id': 2
+                                'id': 2,
                             },
                         ],
                     },
