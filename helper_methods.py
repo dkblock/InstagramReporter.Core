@@ -16,13 +16,16 @@ def pretty(dictionary):
 
 
 def sign_in():
-    print('Введите логин: ', end='')
-    username = input()
-    password = getpass.getpass('Введите пароль: ')
+    with open('config/config.json') as f:
+        credentials = json.load(f)       
+        
+    username = credentials["username"]
+    password = credentials["password"]
     api = InstAPI(username, password)
+
     if not api.login():
-        sys.exit('Неверный логи или пароль!')
-    print('Успешно!\n')
+        sys.exit('Неверный логин или пароль!')
+    print('Авторизация прошла успешно!\n')
     return api
 
 
