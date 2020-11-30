@@ -21,7 +21,7 @@ def sign_in():
     password = getpass.getpass('Введите пароль: ')
     api = InstAPI(username, password)
     if not api.login():
-        sys.exit('Неверный логи или пароль!')
+        sys.exit('Неверный логин или пароль!')
     print('Успешно!\n')
     return api
 
