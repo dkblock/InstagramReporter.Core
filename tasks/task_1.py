@@ -1,4 +1,4 @@
-from helper_methods import sign_in
+from helper_methods import sign_in, get_user_ids
 
 
 def get_celebrities(api, followings):
@@ -18,7 +18,7 @@ def get_celebrities(api, followings):
 
 def main():
     api = sign_in()
-    user_ids = [42415631327]
+    user_ids = get_user_ids()
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)

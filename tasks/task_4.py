@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from helper_methods import sign_in
+from helper_methods import sign_in, get_user_ids
 
 
 def get_records(posts):
@@ -27,7 +27,7 @@ def main():
     api = sign_in()
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = [42415631327]
+    user_ids = get_user_ids()
     users = []
     for user_id in user_ids:
         user = {}
