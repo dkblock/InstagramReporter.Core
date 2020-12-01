@@ -1,3 +1,4 @@
+import getpass
 import hashlib
 import hmac
 import json
@@ -21,12 +22,7 @@ class InstAPI:
     IG_SIG_KEY = '4f8732eb9ba7d1c8e8897a75d6474d4eb3f5279137431b2aafb71fafe2abe178'
     SIG_KEY_VERSION = '4'
 
-    def __init__(self, username, password):
-        md5 = hashlib.md5()
-        md5.update(username.encode('utf-8') + password.encode('utf-8'))
-        self.device_id = self.generate_device_id(md5.hexdigest())
-        self.username = username
-        self.password = password
+    def __init__(self):
         self.uuid = str(uuid.uuid4())
         self.is_authorized = False
         self.last_response = None
@@ -38,6 +34,95 @@ class InstAPI:
         md5.update(seed.encode('utf-8') + salt.encode('utf-8'))
         return f'android-{md5.hexdigest()}'[:16]
 
+    def cache_login(self):
+        print('Попытка входа с помощью сохраненных данных...')
+        try:
+            with open('instapi/user_data.json') as json_file:
+                data = json.load(json_file)
+                self.username_id = data['username_id']
+                self.rank_token = "data['rank_token']"
+                self.device_id = self.generate_device_id(data['md5'])
+                self.session.cookies["ds_user"] = data["ds_user"]
+                self.session.cookies["ds_user_id"] = data["ds_user_id"]
+                self.session.cookies["rur"] = data["rur"]
+                self.session.cookies["sessionid"] = data["sessionid"]
+                self.session.cookies["csrftoken"] = data["csrftoken"]
+        except FileNotFoundError:
+            print('Файл пользователя не найден')
+
+            return False
+        except Exception:
+            print('Не удалось прочитать данные пользователя из файла')
+
+            return False
+
+        url = 'friendships/' + str(self.username_id) + '/following/?'
+        query_string = {
+            'ig_sig_key_version': self.SIG_KEY_VERSION,
+            'rank_token': self.rank_token,
+        }
+        if sys.version_info.major == 3:
+            url += urllib.parse.urlencode(query_string)
+        else:
+            url += urllib.urlencode(query_string)
+
+        if self.send_request(url, login=True, show_msg=False):
+            self.is_authorized = True
+            return True
+
+        print('Не удалось войти с помощью сохраненных данных!')
+
+        return False
+
+    def password_login(self):
+        print('Введите логин: ', end='')
+        username = input()
+        password = getpass.getpass('Введите пароль: ')
+        md5 = hashlib.md5()
+        md5.update(username.encode('utf-8') + password.encode('utf-8'))
+        self.device_id = self.generate_device_id(md5.hexdigest())
+        self.username = username
+        self.password = password
+        data = {
+            'phone_id': str(uuid.uuid4()),
+            '_csrftoken': self.last_response.cookies['csrftoken'],
+            'username': self.username,
+            'guid': self.uuid,
+            'device_id': self.device_id,
+            'password': self.password,
+            'login_attempt_count': '0',
+        }
+
+        if self.send_request(
+            'accounts/login/',
+            self.generate_signature(json.dumps(data)),
+            True,
+            False,
+        ):
+            self.is_authorized = True
+            self.username_id = self.last_json['logged_in_user']['pk']
+            print(f'id: {self.username_id}')
+            self.rank_token = f'{self.username_id}_{self.uuid}'
+            print(f'rank token: {self.rank_token}')
+            print(f'uuid: {self.uuid}')
+            self.token = self.last_response.cookies['csrftoken']
+            print(f'csrf: {self.token}')
+            data = {
+                "username_id": self.username_id,
+                "rank_token": self.rank_token,
+                "csrftoken": self.token,
+                "ds_user": self.last_response.cookies["ds_user"],
+                "ds_user_id": self.last_response.cookies["ds_user_id"],
+                "rur": self.last_response.cookies["rur"],
+                "sessionid": self.last_response.cookies["sessionid"],
+                "md5": md5.hexdigest()
+            }
+
+            with open('instapi/user_data.json', 'w') as json_file:
+                json.dump(data, json_file)
+
+            return True
+
     def login(self):
         if self.is_authorized:
             return
@@ -47,29 +132,18 @@ class InstAPI:
             None,
             True,
         ):
-            data = {
-                'phone_id': str(uuid.uuid4()),
-                '_csrftoken': self.last_response.cookies['csrftoken'],
-                'username': self.username,
-                'guid': self.uuid,
-                'device_id': self.device_id,
-                'password': self.password,
-                'login_attempt_count': '0',
-            }
-
-            if self.send_request(
-                'accounts/login/',
-                self.generate_signature(json.dumps(data)),
-                True,
-            ):
-                self.is_authorized = True
-                self.username_id = self.last_json['logged_in_user']['pk']
-                self.rank_token = f'{self.username_id}_{self.uuid}'
-                self.token = self.last_response.cookies['csrftoken']
-
+            if self.cache_login():
                 return True
 
-    def send_request(self, endpoint, post=None, login=False):
+            if self.password_login():
+                return True
+
+            return False
+
+    def send_request(self, endpoint, post=None, login=False, show_msg=True):
+        if show_msg:
+            print(f'--обработка запроса: {endpoint}')
+
         verify = True  # don't show request warning
 
         if not self.is_authorized and not login:
@@ -101,7 +175,6 @@ class InstAPI:
         except Exception as e:
             print('Except on SendRequest (wait 60 sec and resend): ' + str(e))
             time.sleep(60)
-
         if response.status_code == 200:
             self.last_response = response
             self.last_json = json.loads(response.text)
