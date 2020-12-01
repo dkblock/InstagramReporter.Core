@@ -6,6 +6,6 @@ MacOS/Linux: source venv/bin/activate
 ## Скачать зависимости
 pip install -r requirements.txt
 # Запустить
-python main.py <номер задачи (1-5)>
+python main.py
 # Запустить тесты
 pytest
