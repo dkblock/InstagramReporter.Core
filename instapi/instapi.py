@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import json
+import pickle
 import sys
 import time
 import urllib
@@ -17,7 +18,8 @@ class InstAPI:
         'android_version': 18,
         'android_release': '4.3',
     }
-    USER_AGENT = 'Instagram 10.26.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(**DEVICE_SETTINTS)
+    USER_AGENT = 'Instagram 10.26.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(
+        **DEVICE_SETTINTS)
     IG_SIG_KEY = '4f8732eb9ba7d1c8e8897a75d6474d4eb3f5279137431b2aafb71fafe2abe178'
     SIG_KEY_VERSION = '4'
 
@@ -47,27 +49,35 @@ class InstAPI:
             None,
             True,
         ):
-            data = {
-                'phone_id': str(uuid.uuid4()),
-                '_csrftoken': self.last_response.cookies['csrftoken'],
-                'username': self.username,
-                'guid': self.uuid,
-                'device_id': self.device_id,
-                'password': self.password,
-                'login_attempt_count': '0',
-            }
+            try:
+                with open('my_session.session', 'rb') as my_session:
+                    self.is_authorized = True
+                    self.token = self.session.cookies['csrftoken']
+                    self.session.cookies.update(pickle.load(my_session))
+                    return True
 
-            if self.send_request(
-                'accounts/login/',
-                self.generate_signature(json.dumps(data)),
-                True,
-            ):
-                self.is_authorized = True
-                self.username_id = self.last_json['logged_in_user']['pk']
-                self.rank_token = f'{self.username_id}_{self.uuid}'
-                self.token = self.last_response.cookies['csrftoken']
+            except FileNotFoundError:
+                data = {
+                    'phone_id': str(uuid.uuid4()),
+                    '_csrftoken': self.last_response.cookies['csrftoken'],
+                    'username': self.username,
+                    'guid': self.uuid,
+                    'device_id': self.device_id,
+                    'password': self.password,
+                    'login_attempt_count': '0',
+                }
+                if self.send_request(
+                    'accounts/login/',
+                    self.generate_signature(json.dumps(data)),
+                    True,
+                ):
+                    self.is_authorized = True
+                    self.username_id = self.last_json['logged_in_user']['pk']
+                    self.token = self.last_response.cookies['csrftoken']
+                    with open('my_session.session', 'wb') as my_session:
+                        pickle.dump(self.session.cookies, my_session)
 
-                return True
+                    return True
 
     def send_request(self, endpoint, post=None, login=False):
         verify = True  # don't show request warning
@@ -135,7 +145,7 @@ class InstAPI:
         url = 'friendships/' + str(user_id) + '/following/?'
         query_string = {
             'ig_sig_key_version': self.SIG_KEY_VERSION,
-            'rank_token': self.rank_token,
+            'rank_token': self.uuid,
         }
         if maxid:
             query_string['max_id'] = maxid
@@ -176,7 +186,7 @@ class InstAPI:
 
     def get_user_feed(self, user_id, max_id='', min_timestamp=None):
         return self.send_request(
-            f'feed/user/{user_id}/?max_id={max_id}&min_timestamp={min_timestamp}&rank_token={self.rank_token}&ranked_content=true',
+            f'feed/user/{user_id}/?max_id={max_id}&min_timestamp={min_timestamp}&rank_token={self.uuid}&ranked_content=true',
         )
 
     def get_total_user_feed(self, user_id, min_timestamp=None):
