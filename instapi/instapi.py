@@ -18,8 +18,7 @@ class InstAPI:
         'android_version': 18,
         'android_release': '4.3',
     }
-    USER_AGENT = 'Instagram 10.26.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(
-        **DEVICE_SETTINTS)
+    USER_AGENT = 'Instagram 10.26.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(**DEVICE_SETTINTS)
     IG_SIG_KEY = '4f8732eb9ba7d1c8e8897a75d6474d4eb3f5279137431b2aafb71fafe2abe178'
     SIG_KEY_VERSION = '4'
 
@@ -52,7 +51,6 @@ class InstAPI:
             try:
                 with open('my_session.session', 'rb') as my_session:
                     self.is_authorized = True
-                    self.token = self.session.cookies['csrftoken']
                     self.session.cookies.update(pickle.load(my_session))
                     return True
 
@@ -73,7 +71,6 @@ class InstAPI:
                 ):
                     self.is_authorized = True
                     self.username_id = self.last_json['logged_in_user']['pk']
-                    self.token = self.last_response.cookies['csrftoken']
                     with open('my_session.session', 'wb') as my_session:
                         pickle.dump(self.session.cookies, my_session)
 
