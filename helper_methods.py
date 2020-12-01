@@ -26,6 +26,11 @@ def sign_in():
     return api
 
 
+def get_user_ids():
+    print('Введите id пользователей, разделяя их пробелом: ', end='')
+    return input().split(' ')
+
+
 def error_handler(func):
     """Catch exceptions.
 
