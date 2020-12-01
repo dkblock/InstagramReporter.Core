@@ -15,7 +15,7 @@ def get_records(posts):
         description = post.get('text', '')
         tags = []
         if description:
-            tags.append(get_hashtags(description))
+            tags = get_hashtags(description)
         record = {
             'id': post['pk'],
             'date': datetime.fromtimestamp(
