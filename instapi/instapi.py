@@ -21,6 +21,7 @@ class InstAPI:
     USER_AGENT = 'Instagram 10.26.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(**DEVICE_SETTINTS)
     IG_SIG_KEY = '4f8732eb9ba7d1c8e8897a75d6474d4eb3f5279137431b2aafb71fafe2abe178'
     SIG_KEY_VERSION = '4'
+    SESSION_FILE_NAME = 'instapi/session.json'
 
     def __init__(self):
         self.uuid = str(uuid.uuid4())
@@ -37,16 +38,16 @@ class InstAPI:
     def cache_login(self):
         print('Попытка входа с помощью сохраненных данных...')
         try:
-            with open('instapi/user_data.json') as json_file:
-                data = json.load(json_file)
+            with open(self.SESSION_FILE_NAME) as session_file:
+                data = json.load(session_file)
                 self.username_id = data['username_id']
-                self.rank_token = "data['rank_token']"
+                self.rank_token = data['rank_token']
                 self.device_id = self.generate_device_id(data['md5'])
-                self.session.cookies["ds_user"] = data["ds_user"]
-                self.session.cookies["ds_user_id"] = data["ds_user_id"]
-                self.session.cookies["rur"] = data["rur"]
-                self.session.cookies["sessionid"] = data["sessionid"]
-                self.session.cookies["csrftoken"] = data["csrftoken"]
+                self.session.cookies['ds_user'] = data['ds_user']
+                self.session.cookies['ds_user_id'] = data['ds_user_id']
+                self.session.cookies['rur'] = data['rur']
+                self.session.cookies['sessionid'] = data['sessionid']
+                self.session.cookies['csrftoken'] = data['csrftoken']
         except FileNotFoundError:
             print('Файл пользователя не найден')
 
@@ -101,25 +102,21 @@ class InstAPI:
         ):
             self.is_authorized = True
             self.username_id = self.last_json['logged_in_user']['pk']
-            print(f'id: {self.username_id}')
             self.rank_token = f'{self.username_id}_{self.uuid}'
-            print(f'rank token: {self.rank_token}')
-            print(f'uuid: {self.uuid}')
             self.token = self.last_response.cookies['csrftoken']
-            print(f'csrf: {self.token}')
             data = {
-                "username_id": self.username_id,
-                "rank_token": self.rank_token,
-                "csrftoken": self.token,
-                "ds_user": self.last_response.cookies["ds_user"],
-                "ds_user_id": self.last_response.cookies["ds_user_id"],
-                "rur": self.last_response.cookies["rur"],
-                "sessionid": self.last_response.cookies["sessionid"],
-                "md5": md5.hexdigest()
+                'username_id': self.username_id,
+                'rank_token': self.rank_token,
+                'csrftoken': self.token,
+                'ds_user': self.last_response.cookies['ds_user'],
+                'ds_user_id': self.last_response.cookies['ds_user_id'],
+                'rur': self.last_response.cookies['rur'],
+                'sessionid': self.last_response.cookies['sessionid'],
+                'md5': md5.hexdigest(),
             }
 
-            with open('instapi/user_data.json', 'w') as json_file:
-                json.dump(data, json_file)
+            with open(self.SESSION_FILE_NAME, 'w') as session_file:
+                json.dump(data, session_file)
 
             return True
 
