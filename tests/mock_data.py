@@ -1,3 +1,5 @@
+from instapi.instapi import InstAPI
+
 mock_users = [
     {
         'user': {
@@ -128,3 +130,5 @@ mock_record_without_likes = [
         'like_count': 0,
     },
 ]
+
+api = InstAPI('', '')

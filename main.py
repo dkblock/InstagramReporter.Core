@@ -1,17 +1,18 @@
 import importlib
 import sys
 
-from helper_methods import error_handler, pretty
+from helper_methods import error_handler, pretty, sign_in
 
 
 @error_handler
 def main():
+    api = sign_in()
     while True:
         print_tasks()
         print('Введите номер задания: ', end='')
         task_number = input()
         task = importlib.import_module(f'tasks.task_{task_number}')
-        answer = task.main()
+        answer = task.main(api)
         print(pretty(answer))
         check_next_task()
 

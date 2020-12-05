@@ -1,7 +1,7 @@
 from datetime import datetime
 import re
 
-from helper_methods import sign_in, get_user_ids
+from helper_methods import get_user_ids
 
 
 def get_hashtags(description):
@@ -28,8 +28,7 @@ def get_records(posts):
     return records
 
 
-def main():
-    api = sign_in()
+def main(api):
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
     user_ids = get_user_ids()

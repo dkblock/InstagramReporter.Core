@@ -22,7 +22,7 @@ def sign_in():
     api = InstAPI(username, password)
     if not api.login():
         sys.exit('Неверный логин или пароль!')
-    print('Успешно!\n')
+    print('Аутентификация прошла успешно!\n')
     return api
 
 
@@ -50,12 +50,10 @@ def error_handler(func):
 
 
 def patch_handler(func):
-    @patch.object(getpass, 'getpass')
     @patch('builtins.input', return_value='42415631327')
     @patch.object(InstAPI, 'get_last_feed')
     @patch.object(InstAPI, 'get_profile_info')
     @patch.object(InstAPI, 'get_followings')
-    @patch.object(InstAPI, 'login')
     def inner_function(*args, **kwargs):
         func(*args, **kwargs)
     return inner_function
