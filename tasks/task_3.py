@@ -5,8 +5,8 @@ from helper_methods import sign_in, get_user_ids
 
 
 def get_hashtags(description):
-    words = re.split('\n| ', description)
-    return list(filter(lambda word: word[0] == '#', words))
+    reg = re.compile(r'#(\w+)')
+    return reg.findall(description)
 
 
 def get_records(posts):

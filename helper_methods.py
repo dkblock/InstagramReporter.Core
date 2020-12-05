@@ -50,9 +50,8 @@ def error_handler(func):
 
 
 def patch_handler(func):
-
     @patch.object(getpass, 'getpass')
-    @patch('builtins.input', return_value='')
+    @patch('builtins.input', return_value='42415631327')
     @patch.object(InstAPI, 'get_last_feed')
     @patch.object(InstAPI, 'get_profile_info')
     @patch.object(InstAPI, 'get_followings')

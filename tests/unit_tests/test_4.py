@@ -30,7 +30,7 @@ class TestFourthTask(unittest.TestCase):
         get_profile_info.return_value = mock_users[0]
         expected_value = [
             {
-                42415631327: {
+                '42415631327': {
                     'geotags': [],
                     'records': [],
                 },
@@ -56,7 +56,7 @@ class TestFourthTask(unittest.TestCase):
         get_last_feed.return_value = mock_record
         expected_value = [
             {
-                42415631327: {
+                '42415631327': {
                     'geotags': [],
                     'records': [
                         {
@@ -89,7 +89,7 @@ class TestFourthTask(unittest.TestCase):
         get_last_feed.return_value = mock_record_with_tags
         expected_value = [
             {
-                42415631327: {
+                '42415631327': {
                     'geotags': ['Yaroslavl'],
                     'records': [
                         {
@@ -122,7 +122,7 @@ class TestFourthTask(unittest.TestCase):
         get_last_feed.return_value = mock_records_with_same_geotags
         expected_value = [
             {
-                42415631327: {
+                '42415631327': {
                     'geotags': ['Yaroslavl'],
                     'records': [
                         {
@@ -162,11 +162,11 @@ class TestFourthTask(unittest.TestCase):
         with patch('tasks.task_4.input', return_value=0):
             geotags = ['Moscow', 'Yaroslavl']
             returned_value = main()
-            if returned_value[0][42415631327]['geotags'] != geotags:
+            if returned_value[0]['42415631327']['geotags'] != geotags:
                 geotags = ['Yaroslavl', 'Moscow']
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'geotags': geotags,
                         'records': [
                             {

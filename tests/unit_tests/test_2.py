@@ -63,7 +63,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info.return_value = mock_users[2]
 
         expected_value = {
-            42415631327: [
+            '42415631327': [
                 {
                     1: {
                         'name': 'AAA',

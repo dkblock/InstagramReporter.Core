@@ -31,7 +31,7 @@ class TestFifth(unittest.TestCase):
         with patch('tasks.task_5.input', return_value=0):
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'max': 'does not exist',
                         'middle': 'does not exist',
                         'min': 'does not exist',
@@ -59,7 +59,7 @@ class TestFifth(unittest.TestCase):
         with patch('tasks.task_5.input', return_value=0):
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'max': 99,
                         'min': 99,
                         'middle': 99.0,
@@ -94,7 +94,7 @@ class TestFifth(unittest.TestCase):
         with patch('tasks.task_5.input', return_value=0):
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'max': 101,
                         'min': 99,
                         'middle': 100.0,
@@ -135,7 +135,7 @@ class TestFifth(unittest.TestCase):
         with patch('tasks.task_5.input', return_value=0):
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'max': 4,
                         'min': 2,
                         'middle': 3.33,
@@ -182,7 +182,7 @@ class TestFifth(unittest.TestCase):
         with patch('tasks.task_5.input', return_value=0):
             expected_value = [
                 {
-                    42415631327: {
+                    '42415631327': {
                         'max': 0,
                         'min': 0,
                         'middle': 0.0,
