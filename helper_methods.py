@@ -50,18 +50,9 @@ def get_user_ids():
 
 
 def error_handler(func):
-    """Catch exceptions.
-
-    :param func: function which use decorator
-    :return: inner_function
-    """
     def inner_function(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except IndexError:
-            sys.exit("Чтобы запустить приложение используйте комманду: 'python3 main.py <номер задания>'")  # noqa: E501
-        except ModuleNotFoundError:
-            sys.exit('Номер задания должен быть в диапазоне от 1 до 5')
         except Exception as error:
             sys.exit(f'Произошла непредвиденная ошибка: {error}')
     return inner_function

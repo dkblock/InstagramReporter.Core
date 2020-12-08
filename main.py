@@ -10,7 +10,11 @@ def main():
         print_tasks()
         print('Введите номер задания: ', end='')
         task_number = input()
-        task = importlib.import_module(f'tasks.task_{task_number}')
+        try:
+            task = importlib.import_module(f'tasks.task_{task_number}')
+        except ModuleNotFoundError:
+            print('Номер задания должен быть в диапазоне от 1 до 5')
+            continue
         answer = task.main(api)
         print(pretty(answer))
         check_next_task()
