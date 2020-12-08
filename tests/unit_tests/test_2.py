@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from helper_methods import patch_handler
 from tasks.task_2 import find_tags, get_blogs, main
-from tests.mock_data import mock_users
+from tests.mock_data import api, mock_users
 
 
 class TestFirstTask(unittest.TestCase):
@@ -33,37 +33,29 @@ class TestFirstTask(unittest.TestCase):
     @patch_handler
     def test_get_empty_blogs(
         self,
-        login,
         get_followings,
         get_profile_info,
         get_last_feed,
         input,
-        getpass,
     ):
-        login.return_value = True
-        getpass.return_value = ''
         get_profile_info.return_value = mock_users[1]
         with patch('tasks.task_2.find_tags', return_value=[]):
-            returned_value = get_blogs(login, [{'pk': 1}], ['travel', 'sport'])
+            returned_value = get_blogs(api, [{'pk': 1}], ['travel', 'sport'])
             self.assertEqual(returned_value, [])
 
     @patch_handler
     def test_get_blogs(
         self,
-        login,
         get_followings,
         get_profile_info,
         get_last_feed,
         input,
-        getpass,
     ):
-        login.return_value = True
-        getpass.return_value = ''
         get_followings.return_value = [{'pk': 1}]
         get_profile_info.return_value = mock_users[2]
 
         expected_value = {
-            42415631327: [
+            '42415631327': [
                 {
                     1: {
                         'name': 'AAA',
@@ -74,4 +66,4 @@ class TestFirstTask(unittest.TestCase):
                 },
             ],
         }
-        self.assertEqual(main(), expected_value)
+        self.assertEqual(main(api), expected_value)

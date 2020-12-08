@@ -1,4 +1,4 @@
-from helper_methods import sign_in, get_user_ids
+from helper_methods import get_user_ids
 
 
 def find_tags(biography, tags):
@@ -26,8 +26,7 @@ def get_blogs(api, followings, tags):
     return blogs
 
 
-def main():
-    api = sign_in()
+def main(api):
     user_ids = get_user_ids()
     tags = ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
     users = {}
