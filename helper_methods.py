@@ -6,6 +6,24 @@ from unittest.mock import patch
 from instapi.instapi import InstAPI
 
 
+def print_tasks():
+    print('\n1. Определить, на каких известных личностей подписан пользователь')
+    print('2. Определить, на какие блоги подписан пользователь')
+    print('3. Определить, насколько активно пользователь ведёт свою страницу')
+    print('4. Получить геометки с последних публикаций пользователя')
+    print('5. Получить максимальное/минимальное и среднее количество лайков по последним записям\n')  # noqa: E501
+
+
+def check_next_task():
+    print('\nПродолжить? Y/N (да/нет): ', end='')
+    answer = input()
+    if answer.lower() == 'n':
+        sys.exit()
+    elif answer.lower() != 'y':
+        print('Ошибка! Введите Y/N!')
+        check_next_task()
+
+
 def pretty(dictionary):
     return json.dumps(
         dictionary,
