@@ -9,7 +9,8 @@ def get_records(posts):
     likes_counts = []
     records = []
     for post in posts:
-        description = post.get('text', '')
+        caption = post['caption']
+        description = caption['text'] if caption else ''
         likes_counts.append(post['like_count'])
         record = {
             'id': post['pk'],

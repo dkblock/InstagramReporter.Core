@@ -12,7 +12,8 @@ def get_hashtags(description):
 def get_records(posts):
     records = []
     for post in posts:
-        description = post.get('text', '')
+        caption = post['caption']
+        description = caption['text'] if caption else ''
         tags = []
         if description:
             tags = get_hashtags(description)
@@ -47,7 +48,7 @@ def main(api):
         last_activity_dt = datetime.fromtimestamp(posts[0]['taken_at'])
         first_activity_dt = datetime.fromtimestamp(posts[-1]['taken_at'])
         interval = (last_activity_dt - first_activity_dt).days
-        frequency = round(count / interval, 2) if interval else count
+        frequency = round(count / interval, 2) if interval else len(posts)
         user[user_id] = {
             'last_activity': last_activity_dt.strftime('%d-%m-%Y, %H:%M'),
             'frequency': frequency,

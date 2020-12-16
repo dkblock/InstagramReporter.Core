@@ -7,7 +7,8 @@ def get_records(posts):
     geotags = set()
     records = []
     for post in posts:
-        description = post.get('text', '')
+        caption = post['caption']
+        description = caption['text'] if caption else ''
         location = post.get('location', {})
         if location:
             geotags.add(location.get('name', None))
