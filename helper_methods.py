@@ -44,8 +44,27 @@ def sign_in():
     return api
 
 
-def get_user_ids():
-    print('Введите id пользователей, разделяя их пробелом: ', end='')
+def get_users():
+    print('1. Из файла (data/users.json)')
+    print('2. Вручную')
+    print('Выберите способ ввода пользователей: ', end='')
+    answer = input()
+
+    if answer == '1':
+        return get_users_from_file()
+    elif answer == '2':
+        return get_users_manually()
+    return get_users()
+
+
+def get_users_from_file():
+    with open('data/users.json') as users_data:
+        users = json.load(users_data)
+    return users
+
+
+def get_users_manually():
+    print('Введите имена пользователей, разделяя их пробелом: ', end='')
     return input().split(' ')
 
 

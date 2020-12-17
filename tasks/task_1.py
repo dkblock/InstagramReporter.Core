@@ -1,6 +1,3 @@
-from helper_methods import get_user_ids
-
-
 def get_celebrities(api, followings):
     celebrities = []
     for following in followings:
@@ -16,8 +13,8 @@ def get_celebrities(api, followings):
     return celebrities
 
 
-def main(api):
-    user_ids = get_user_ids()
+def main(api, usernames):
+    user_ids = api.get_ids_by_usernames(usernames)
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)

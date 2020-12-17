@@ -2,8 +2,6 @@ from datetime import datetime
 
 import numpy as np
 
-from helper_methods import get_user_ids
-
 
 def get_records(posts):
     likes_counts = []
@@ -24,10 +22,10 @@ def get_records(posts):
     return likes_counts, records
 
 
-def main(api):
+def main(api, usernames):
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = get_user_ids()
+    user_ids = api.get_ids_by_usernames(usernames)
     users = []
     for user_id in user_ids:
         user = {}

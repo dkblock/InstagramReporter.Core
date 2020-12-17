@@ -1,8 +1,6 @@
 from datetime import datetime
 import re
 
-from helper_methods import get_user_ids
-
 
 def get_hashtags(description):
     reg = re.compile(r'#(\w+)')
@@ -29,10 +27,10 @@ def get_records(posts):
     return records
 
 
-def main(api):
+def main(api, usernames):
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = get_user_ids()
+    user_ids = api.get_ids_by_usernames(usernames)
     users = []
     for user_id in user_ids:
         user = {}
@@ -48,7 +46,7 @@ def main(api):
         last_activity_dt = datetime.fromtimestamp(posts[0]['taken_at'])
         first_activity_dt = datetime.fromtimestamp(posts[-1]['taken_at'])
         interval = (last_activity_dt - first_activity_dt).days
-        frequency = round(count / interval, 2) if interval else len(posts)
+        frequency = round(len(posts) / interval, 2) if interval else len(posts)
         user[user_id] = {
             'last_activity': last_activity_dt.strftime('%d-%m-%Y, %H:%M'),
             'frequency': frequency,

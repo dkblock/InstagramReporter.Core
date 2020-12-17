@@ -1,4 +1,4 @@
-from helper_methods import get_user_ids
+import json
 
 
 def find_tags(biography, tags):
@@ -26,9 +26,9 @@ def get_blogs(api, followings, tags):
     return blogs
 
 
-def main(api):
-    user_ids = get_user_ids()
-    tags = ['travel', 'sport', 'cooking', 'кухня', 'спорт', 'фитнес']
+def main(api, usernames):
+    user_ids = api.get_ids_by_usernames(usernames)
+    tags = ["travel", "sport", "cooking", "кухня", "спорт", "фитнес"]
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)
