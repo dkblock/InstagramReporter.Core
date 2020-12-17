@@ -28,7 +28,7 @@ def get_blogs(api, followings, tags):
 
 def main(api, user_ids):
     with open('data/tags.json', encoding='utf-8') as tags_data:
-        tags = json.load(tags_data)        
+        tags = json.load(tags_data)
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)

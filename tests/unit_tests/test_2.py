@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from helper_methods import patch_handler
 from tasks.task_2 import find_tags, get_blogs, main
-from tests.mock_data import api, mock_users
+from tests.mock_data import api, mock_users, users_ids
 
 
 class TestFirstTask(unittest.TestCase):
@@ -55,7 +55,7 @@ class TestFirstTask(unittest.TestCase):
         get_profile_info.return_value = mock_users[2]
 
         expected_value = {
-            '42415631327': [
+            42415631327: [
                 {
                     1: {
                         'name': 'AAA',
@@ -66,4 +66,4 @@ class TestFirstTask(unittest.TestCase):
                 },
             ],
         }
-        self.assertEqual(main(api), expected_value)
+        self.assertEqual(main(api, users_ids), expected_value)
