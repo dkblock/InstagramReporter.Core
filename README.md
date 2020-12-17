@@ -1,11 +1,14 @@
 # Установить виртуальное окружение
-python -m venv venv
+```python -m venv venv```
 ## Активировать venv
-Windows: venv\Scripts\activate
-MacOS/Linux: source venv/bin/activate
+Windows:
+```venv\Scripts\activate```
+
+MacOS/Linux:
+```source venv/bin/activate```
 ## Скачать зависимости
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 # Запустить
-python main.py
+```python main.py```
 # Запустить тесты
-pytest
+```pytest```
