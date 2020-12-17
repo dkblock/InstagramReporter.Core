@@ -158,13 +158,6 @@ class InstAPI:
                 return followings
             next_max_id = temp['next_max_id']
 
-    def get_ids_by_usernames(self, usernames):
-        user_ids = []
-        for username in usernames:
-            user_id = self.get_id_by_username(username)
-            user_ids.append(user_id)
-        return user_ids
-
     def get_id_by_username(self, username):
         user_info = self.send_request(
             'users/' + str(username) + '/usernameinfo/',

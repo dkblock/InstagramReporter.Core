@@ -44,6 +44,15 @@ def sign_in():
     return api
 
 
+def get_user_ids(api):
+    usernames = get_users()
+    user_ids = []
+    for username in usernames:
+        user_id = api.get_id_by_username(username)
+        user_ids.append(user_id)
+    return user_ids
+
+
 def get_users():
     print('1. Из файла (data/users.json)')
     print('2. Вручную')

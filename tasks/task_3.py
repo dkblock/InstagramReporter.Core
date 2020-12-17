@@ -27,10 +27,9 @@ def get_records(posts):
     return records
 
 
-def main(api, usernames):
+def main(api, user_ids):
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = api.get_ids_by_usernames(usernames)
     users = []
     for user_id in user_ids:
         user = {}

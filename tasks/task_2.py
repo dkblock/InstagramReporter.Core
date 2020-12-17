@@ -2,11 +2,11 @@ import json
 
 
 def find_tags(biography, tags):
-    finded_tags = []
+    found_tags = []
     for tag in tags:
         if biography.find(tag) != -1:
-            finded_tags.append(tag)
-    return finded_tags
+            found_tags.append(tag)
+    return found_tags
 
 
 def get_blogs(api, followings, tags):
@@ -14,21 +14,21 @@ def get_blogs(api, followings, tags):
     for following in followings:
         profile_info = api.get_profile_info(following['pk'])['user']
         blog = {}
-        finded_tags = find_tags(profile_info['biography'].lower(), tags)
-        if finded_tags:
+        found_tags = find_tags(profile_info['biography'].lower(), tags)
+        if found_tags:
             blog[profile_info['pk']] = {
                 'name': profile_info['full_name'],
                 'followers': profile_info['follower_count'],
                 'description': profile_info['biography'],
-                'tags': finded_tags,
+                'tags': found_tags,
             }
             blogs.append(blog)
     return blogs
 
 
-def main(api, usernames):
-    user_ids = api.get_ids_by_usernames(usernames)
-    tags = ["travel", "sport", "cooking", "кухня", "спорт", "фитнес"]
+def main(api, user_ids):
+    with open('data/tags.json', encoding='utf-8') as tags_data:
+        tags = json.load(tags_data)        
     users = {}
     for user_id in user_ids:
         followings = api.get_followings(user_id)
