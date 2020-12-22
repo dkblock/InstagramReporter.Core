@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from helper_methods import get_user_ids
-
 
 def get_records(posts):
     geotags = set()
@@ -24,10 +22,9 @@ def get_records(posts):
     return list(geotags), records
 
 
-def main(api):
+def main(api, user_ids):
     print('Введите количество записей, которые добавить в вывод: ', end='')
     count = int(input())
-    user_ids = get_user_ids()
     users = []
     for user_id in user_ids:
         user = {}

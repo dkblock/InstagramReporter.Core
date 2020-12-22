@@ -1,5 +1,5 @@
-import json
 import getpass
+import json
 import sys
 from unittest.mock import patch
 
@@ -44,8 +44,36 @@ def sign_in():
     return api
 
 
-def get_user_ids():
-    print('Введите id пользователей, разделяя их пробелом: ', end='')
+def get_user_ids(api):
+    usernames = get_users()
+    user_ids = []
+    for username in usernames:
+        user_id = api.get_id_by_username(username)
+        user_ids.append(user_id)
+    return user_ids
+
+
+def get_users():
+    print('1. Из файла (data/users.json)')
+    print('2. Вручную')
+    print('Выберите способ ввода пользователей: ', end='')
+    answer = input()
+
+    if answer == '1':
+        return get_users_from_file()
+    elif answer == '2':
+        return get_users_manually()
+    return get_users()
+
+
+def get_users_from_file():
+    with open('data/users.json') as users_data:
+        users = json.load(users_data)
+    return users
+
+
+def get_users_manually():
+    print('Введите имена пользователей, разделяя их пробелом: ', end='')
     return input().split(' ')
 
 
@@ -59,7 +87,7 @@ def error_handler(func):
 
 
 def patch_handler(func):
-    @patch('builtins.input', return_value='42415631327')
+    @patch('builtins.input', return_value='')
     @patch.object(InstAPI, 'get_last_feed')
     @patch.object(InstAPI, 'get_profile_info')
     @patch.object(InstAPI, 'get_followings')

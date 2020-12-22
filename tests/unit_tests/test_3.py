@@ -9,6 +9,7 @@ from tests.mock_data import (
     mock_record_with_text,
     mock_two_records,
     mock_users,
+    users_ids,
 )
 
 
@@ -26,7 +27,7 @@ class TestThirdTask(unittest.TestCase):
         get_profile_info.return_value = mock_users[0]
         expected_value = [
             {
-                '42415631327': {
+                42415631327: {
                     'last_activity': 'does not exist',
                     'frequency': 0,
                     'records': [],
@@ -34,7 +35,7 @@ class TestThirdTask(unittest.TestCase):
             },
         ]
         with patch('tasks.task_3.input', return_value=0):
-            self.assertEqual(main(api), expected_value)
+            self.assertEqual(main(api, users_ids), expected_value)
 
     @patch_handler
     def test_one_record(
@@ -49,7 +50,7 @@ class TestThirdTask(unittest.TestCase):
         get_last_feed.return_value = mock_record
         expected_value = [
             {
-                '42415631327': {
+                42415631327: {
                     'last_activity': '12-06-2018, 12:55',
                     'frequency': 1,
                     'records': [
@@ -64,7 +65,7 @@ class TestThirdTask(unittest.TestCase):
             },
         ]
         with patch('tasks.task_3.input', return_value=1):
-            self.assertEqual(main(api), expected_value)
+            self.assertEqual(main(api, users_ids), expected_value)
 
     @patch_handler
     def test_two_records(
@@ -79,7 +80,7 @@ class TestThirdTask(unittest.TestCase):
         get_last_feed.return_value = mock_two_records
         expected_value = [
             {
-                '42415631327': {
+                42415631327: {
                     'last_activity': '12-06-2018, 12:55',
                     'frequency': 2,
                     'records': [
@@ -100,7 +101,7 @@ class TestThirdTask(unittest.TestCase):
             },
         ]
         with patch('tasks.task_3.input', return_value=2):
-            self.assertEqual(main(api), expected_value)
+            self.assertEqual(main(api, users_ids), expected_value)
 
     @patch_handler
     def test_record_description(
@@ -115,7 +116,7 @@ class TestThirdTask(unittest.TestCase):
         get_last_feed.return_value = mock_record_with_text
         expected_value = [
             {
-                '42415631327': {
+                42415631327: {
                     'last_activity': '12-06-2018, 12:55',
                     'frequency': 1,
                     'records': [
@@ -130,7 +131,7 @@ class TestThirdTask(unittest.TestCase):
             },
         ]
         with patch('tasks.task_3.input', return_value=1):
-            self.assertEqual(main(api), expected_value)
+            self.assertEqual(main(api, users_ids), expected_value)
 
     @patch_handler
     def test_record_tags(
@@ -145,7 +146,7 @@ class TestThirdTask(unittest.TestCase):
         get_last_feed.return_value = mock_record_with_tags
         expected_value = [
             {
-                '42415631327': {
+                42415631327: {
                     'last_activity': '12-06-2018, 12:55',
                     'frequency': 1,
                     'records': [
@@ -160,7 +161,7 @@ class TestThirdTask(unittest.TestCase):
             },
         ]
         with patch('tasks.task_3.input', return_value=1):
-            self.assertEqual(main(api), expected_value)
+            self.assertEqual(main(api, users_ids), expected_value)
 
     def test_get_hashtags(self):
         test_description = '#tag1#tag2'

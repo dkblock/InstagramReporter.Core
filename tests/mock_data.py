@@ -1,5 +1,7 @@
 from instapi.instapi import InstAPI
 
+users_ids = [42415631327]
+
 mock_users = [
     {
         'user': {
